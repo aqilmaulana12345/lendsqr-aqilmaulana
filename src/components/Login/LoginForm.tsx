@@ -17,7 +17,7 @@ const LoginForm: React.FC = () => {
     if (email && password) {
       navigate("/dashboard");
     } else {
-      alert("must fill password and email ");
+      alert("Fill it in with a random email and password. ");
     }
   };
 
@@ -27,7 +27,7 @@ const LoginForm: React.FC = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: { xs: 2, md: 2.5 }, // 🚀 Jarak antar elemen mengecil di layar HP
+        gap: { xs: 2, md: 2.5 }, 
         width: "100%",
         maxWidth: "447px",
         mx: "auto",
@@ -52,7 +52,7 @@ const LoginForm: React.FC = () => {
               height: "50px",
               borderRadius: "5px",
               fontFamily: '"Avenir Next", sans-serif',
-              fontSize: { xs: "14px", md: "15px" }, // 🚀 Teks input lebih kecil di HP
+              fontSize: { xs: "14px", md: "15px" }, 
               backgroundColor: "#ffffff",
             },
           },
