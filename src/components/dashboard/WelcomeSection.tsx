@@ -18,7 +18,7 @@ import {
   IconButton,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Pagination from "@mui/material/Pagination"; // Pastikan import ini ditambahkan di atas file
+import Pagination from "@mui/material/Pagination";
 
 import { getUsersApi, type UserRow } from "../../api/userApi.js";
 import FilterImage from "../../assets/images/filter.png";
@@ -90,7 +90,7 @@ const WelcomeSection = () => {
     if (s === "aktif" || s === "active") return "active";
     if (s === "pending") return "pending";
     if (s === "nonaktif" || s === "inactive") return "inactive";
-    if (s === "blacklist") return "blacklist";
+    if (s === "blacklist" || s === "blacklisted") return "blacklist"; // Ditambah 'blacklisted' agar sinkron dengan dropdown
     return s;
   };
 
@@ -105,7 +105,7 @@ const WelcomeSection = () => {
       (row.email?.toLowerCase() || "").includes(filters.email.toLowerCase()) &&
       (row.phoneNumber?.toLowerCase() || "").includes(filters.phoneNumber.toLowerCase()) &&
       (row.dateJoined?.toLowerCase() || "").includes(filters.dateJoined.toLowerCase()) &&
-      (rowStatusNormalized).includes(filterStatusNormalized)
+      rowStatusNormalized.includes(filterStatusNormalized)
     );
   });
 
@@ -137,13 +137,15 @@ const WelcomeSection = () => {
     { label: "Status", key: "status" },
   ];
 
-  // 2. LOGIKA WARNA DAN TEKS DISESUAIKAN (Mendukung fallback multi-bahasa)
+  // 2. MENGGUNAKAN HEX CODE MURNI (Sangat aman untuk production build MUI)
   const getStatusBadgeStyles = (status: string = "") => {
     const s = normalizeStatus(status);
+    
     if (s === "active") return { bg: "#f3fbf7", color: "#39CD62", label: "Active" };
     if (s === "pending") return { bg: "#fdf7ed", color: "#E9B200", label: "Pending" };
     if (s === "inactive") return { bg: "#f5f5f7", color: "#545F7D", label: "Inactive" };
     if (s === "blacklist") return { bg: "#fcebeb", color: "#9E0000", label: "Blacklisted" };
+    
     return { bg: "#f5f5f7", color: "#545F7D", label: status };
   };
 
@@ -226,8 +228,8 @@ const WelcomeSection = () => {
                           fontWeight: 500,
                           fontFamily: "'Work Sans', sans-serif",
                           display: "inline-block",
-                          backgroundColor: badge.bg,
-                          color: badge.color,
+                          backgroundColor: badge.bg, // Sekarang mengambil data warna hex dari objek badge dengan benar
+                          color: badge.color,        // Sekarang mengambil data warna hex dari objek badge dengan benar
                         }}
                       >
                         {badge.label}
@@ -253,123 +255,109 @@ const WelcomeSection = () => {
       </TableContainer>
     
       <TablePagination
-  rowsPerPageOptions={[10, 25, 50]}
-  component="div"
-  count={filteredRows.length}
-  rowsPerPage={rowsPerPage}
-  page={page}
-  onPageChange={handleChangePage}
-  onRowsPerPageChange={handleChangeRowsPerPage}
-  labelRowsPerPage="Showing:"
-  
-  // --- HANYA MENAMPILKAN "out of [total]" ---
-  labelDisplayedRows={({ count }) => {
-    return `out of ${count}`;
-  }}
-
-  // --- MENGGANTI TOMBOL PANAH MENJADI ANGKA 1, 2, 3 ---
-  ActionsComponent={({ count, page, rowsPerPage, onPageChange }) => {
-    const pageCount = Math.ceil(count / rowsPerPage);
-    return (
-      <Pagination
-        count={pageCount}
-        page={page + 1} // Di MUI Pagination halaman dimulai dari 1, sedangkan TablePagination dimulai dari 0
-        onChange={(_, newPage) => onPageChange(null as any, newPage - 1)}
-        shape="rounded"
-        variant="outlined"
+        rowsPerPageOptions={[10, 25, 50]}
+        component="div"
+        count={filteredRows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Showing:"
+        labelDisplayedRows={({ count }) => {
+          return `out of ${count}`;
+        }}
+        ActionsComponent={({ count, page, rowsPerPage, onPageChange }) => {
+          const pageCount = Math.ceil(count / rowsPerPage);
+          return (
+            <Pagination
+              count={pageCount}
+              page={page + 1}
+              onChange={(_, newPage) => onPageChange(null as any, newPage - 1)}
+              shape="rounded"
+              variant="outlined"
+              sx={{
+                ml: 2,
+                "& .MuiPaginationItem-root": {
+                  fontFamily: "'Work Sans', sans-serif",
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  borderRadius: "8px",
+                  backgroundColor: "#213F7D1A",
+                  border: "1px solid #e0e0e0",
+                  color: "#213F7D",
+                  margin: "0 3px",
+                  padding: "4px 8px",
+                  "&:hover": {
+                    backgroundColor: "#213F7D2E",
+                    borderColor: "#b0b0b0",
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "#213F7D",
+                    color: "#ffffff",
+                    borderColor: "#213F7D",
+                    "&:hover": {
+                      backgroundColor: "#162e5c",
+                    },
+                  },
+                  "&.Mui-disabled": {
+                    backgroundColor: "#f5f5f5",
+                    color: "#a0aec0",
+                    border: "1px solid #e2e8f0",
+                    opacity: 0.6,
+                  },
+                },
+              }}
+            />
+          );
+        }}
         sx={{
-          ml: 2,
-          // Mengatur gaya kotak untuk setiap tombol angka dan panah
-          "& .MuiPaginationItem-root": {
+          borderTop: "1px solid #e0e0e0",
+          fontFamily: "'Work Sans', sans-serif",
+          "& .MuiTablePagination-toolbar": { 
+            display: "flex", 
+            justifyContent: "space-between", 
+            alignItems: "center", 
+            px: 2 
+          },
+          "& .MuiTablePagination-spacer": { display: "none" },
+          "& .MuiTablePagination-selectLabel": { 
             fontFamily: "'Work Sans', sans-serif",
-            fontSize: "0.8rem",
-            fontWeight: 600,
+            color: "#545F7D",
+            fontSize: "0.875rem",
+          },
+          "& .MuiInputBase-root": {
+            fontFamily: "'Work Sans', sans-serif",
             borderRadius: "8px",
-            backgroundColor: "#213F7D1A", // Background sesuai request
-            border: "1px solid #e0e0e0",
-            color: "#213F7D",
-            margin: "0 3px",
-            padding: "4px 8px",
+            backgroundColor: "#213F7D1A",
+            marginLeft: "8px",
+            marginRight: "24px",
+            "& .MuiSelect-select": {
+              paddingTop: "6px",
+              paddingBottom: "6px",
+              paddingLeft: "12px",
+              paddingRight: "32px !important",
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              color: "#21407e",
+            },
             "&:hover": {
-              backgroundColor: "#213F7D2E",
               borderColor: "#b0b0b0",
             },
-            // Gaya saat tombol angka tersebut aktif/diklik (Halaman yang sedang dibuka)
-            "&.Mui-selected": {
-              backgroundColor: "#213F7D", // Warna solid untuk menandakan halaman aktif
-              color: "#ffffff",
-              borderColor: "#213F7D",
-              "&:hover": {
-                backgroundColor: "#162e5c",
-              },
-            },
-            // Gaya saat tombol mati/disabled
-            "&.Mui-disabled": {
-              backgroundColor: "#f5f5f5",
-              color: "#a0aec0",
-              border: "1px solid #e2e8f0",
-              opacity: 0.6,
-            },
+            "&.Mui-focused": {
+              borderColor: "#39CDCC",
+            }
+          },
+          "& .MuiTablePagination-displayedRows": { 
+            fontFamily: "'Work Sans', sans-serif", 
+            marginRight: "auto",
+            color: "#545F7D",
+            fontSize: "0.875rem",
+          },
+          "& .MuiTablePagination-actions": { 
+            marginLeft: 0,
           },
         }}
       />
-    );
-  }}
-  // ----------------------------------------------------
-
-  sx={{
-    borderTop: "1px solid #e0e0e0",
-    fontFamily: "'Work Sans', sans-serif",
-    "& .MuiTablePagination-toolbar": { 
-      display: "flex", 
-      justifyContent: "space-between", 
-      alignItems: "center", 
-      px: 2 
-    },
-    "& .MuiTablePagination-spacer": { display: "none" },
-    "& .MuiTablePagination-selectLabel": { 
-      fontFamily: "'Work Sans', sans-serif",
-      color: "#545F7D",
-      fontSize: "0.875rem",
-    },
-    
-    // Kotak untuk Select Dropdown (Showing)
-    "& .MuiInputBase-root": {
-      fontFamily: "'Work Sans', sans-serif",
-      borderRadius: "8px",
-      backgroundColor: "#213F7D1A",
-      marginLeft: "8px",
-      marginRight: "24px",
-      "& .MuiSelect-select": {
-        paddingTop: "6px",
-        paddingBottom: "6px",
-        paddingLeft: "12px",
-        paddingRight: "32px !important",
-        fontSize: "0.875rem",
-        fontWeight: 600,
-        color: "#21407e",
-      },
-      "&:hover": {
-        borderColor: "#b0b0b0",
-      },
-      "&.Mui-focused": {
-        borderColor: "#39CDCC",
-      }
-    },
-
-    "& .MuiTablePagination-displayedRows": { 
-      fontFamily: "'Work Sans', sans-serif", 
-      marginRight: "auto",
-      color: "#545F7D",
-      fontSize: "0.875rem",
-    },
-    
-    // Sembunyikan pembungkus bawaan karena sudah diganti Pagination baru di atas
-    "& .MuiTablePagination-actions": { 
-      marginLeft: 0,
-    },
-  }}
-/>
     
       <Menu
         anchorEl={anchorEl}
@@ -452,7 +440,7 @@ const WelcomeSection = () => {
             />
           </Box>
 
-          {/* Filter Status (Value menggunakan format standar lowercase) */}
+          {/* Filter Status */}
           <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
             <Typography sx={{ fontFamily: "'Work Sans', sans-serif", fontSize: "0.85rem", fontWeight: 500, color: "#4a5568" }}>
               Status
@@ -472,7 +460,7 @@ const WelcomeSection = () => {
               <MenuItem value="active">Active</MenuItem>
               <MenuItem value="pending">Pending</MenuItem>
               <MenuItem value="inactive">Inactive</MenuItem>
-              <MenuItem value="blacklisted">Blacklisted</MenuItem>
+              <MenuItem value="blacklist">Blacklisted</MenuItem>
             </Select>
           </Box>
 
