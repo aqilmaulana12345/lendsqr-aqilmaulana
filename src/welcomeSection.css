@@ -1,0 +1,62 @@
+.user-table-card {
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.table-title {
+  margin-bottom: 20px !important;
+  font-weight: 700 !important;
+}
+
+/* --- PERUBAHAN DI SINI --- */
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Mengaktifkan scroll horizontal HANYA di dalam container tabel */
+  -webkit-overflow-scrolling: touch; /* Membuat scroll di layar HP terasa smooth/lancar */
+}
+
+/* Memaksa elemen table di dalamnya punya lebar minimal saat di layar kecil,
+   sehingga memicu fungsi overflow-x di atas bekerja dengan sempurna */
+.table-container table {
+  min-width: 600px; 
+}
+/* ------------------------- */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .user-table-card {
+    padding: 16px;
+  }
+
+  .MuiTableCell-root {
+    padding: 12px 8px; /* Disesuaikan sedikit agar tidak terlalu mepet atas-bawah */
+    font-size: 13px;   /* Tidak perlu terlalu kecil karena tabel sudah bisa di-scroll */
+  }
+
+  .MuiChip-root {
+    font-size: 11px;
+    height: 24px;
+  }
+}
+
+/* HP */
+@media (max-width: 480px) {
+  .user-table-card {
+    padding: 12px;
+  }
+
+  .MuiTableCell-root {
+    padding: 12px 8px; 
+    font-size: 13px; /* Menggunakan ukuran normal karena layout aman di dalam scroll */
+  }
+
+  .MuiTableCell-head {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .MuiChip-root {
+    font-size: 11px;
+    height: 22px;
+  }
+}
