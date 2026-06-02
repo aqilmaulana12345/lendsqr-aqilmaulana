@@ -129,23 +129,23 @@ const Dashboard: React.FC = () => {
         {/* Container Tumpukan Card Utama */}
         <Box className="card-wrapper">
           
-          {/* CARD ATAS */}
+          {/* First Card */}
           <Card className="custom-card" sx={{ width: "100%", maxWidth: "1037px", height: { xs: "auto", md: "210px" } }}>
             <CardContent sx={{ p: 3, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 3 }}>
               <Box className="profile-container" sx={{ flexWrap: { xs: "wrap", md: "nowrap" }, gap: { xs: 3, md: 6 } }}>
                 
-                {/* Kolom 1 */}
+                {/* Coloumn 1 */}
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2, flexShrink: 0 }}>
                   <Avatar src="/images/profile.jpg" alt="User Profile" sx={{ width: 100, height: 100 }} />
                   <Box>
                     <Typography variant="h6" sx={{ fontWeight: 500, color: "#213F7D" }}>Grace Effiom</Typography>
                     <Typography variant="body2" color="text.secondary">LSQFf587g90</Typography>
                   </Box>
-                </                Box>
+                </ Box>
 
                 <Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
 
-                {/* Kolom 2 */}
+                {/* Coloumn 2 */}
                 <Box sx={{ flexShrink: 0, px: { md: 2 } }}>
                   <Typography variant="body2" sx={{ color: "#545F7D", mb: 1 }}>User's Tier</Typography>
                   <Box sx={{ display: "flex", gap: 0.5 }}>
@@ -157,7 +157,7 @@ const Dashboard: React.FC = () => {
 
                 <Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
 
-                {/* Kolom 3 */}
+                {/* Coloumn 3 */}
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: { xs: 0, md: 1 }, pl: { md: 4 } }}>
                   <Typography variant="h6" sx={{ fontWeight: 600, color: "#213F7D" }}>₦200,000.00</Typography>
                   <Typography variant="body2" color="text.secondary">00921 / Providus Bank</Typography>
@@ -166,19 +166,29 @@ const Dashboard: React.FC = () => {
 
               {/* Navigation Tab */}
               <Box sx={{ width: "100%", mt: "auto" }}>
-                <Tabs value={0} variant="fullWidth" sx={{ minHeight: "auto", "& .MuiTabs-indicator": { backgroundColor: "#39CDCC", height: "2px" } }}>
-                  <Tab label="General Details" sx={{ textTransform: "none", fontWeight: 500, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" } }} />
-                  <Tab label="Documents" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" } }} />
-                  <Tab label="Bank Details" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" } }} />
-                  <Tab label="Loans" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" } }} />
-                  <Tab label="Savings" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" } }} />
-                  <Tab label="App and System" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" } }} />
-                </Tabs>
+  <Tabs 
+    value={0} 
+    variant="scrollable"         
+    scrollButtons="auto"        
+    allowScrollButtonsMobile    
+    sx={{ 
+      minHeight: "auto", 
+      "& .MuiTabs-indicator": { backgroundColor: "#39CDCC", height: "2px" },
+    }}
+  >
+   
+    <Tab label="General Details" sx={{ textTransform: "none", fontWeight: 500, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" }, minWidth: "auto", flexGrow: 1 }} />
+    <Tab label="Documents" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" }, minWidth: "auto", flexGrow: 1 }} />
+    <Tab label="Bank Details" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" }, minWidth: "auto", flexGrow: 1 }} />
+    <Tab label="Loans" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" }, minWidth: "auto", flexGrow: 1 }} />
+    <Tab label="Savings" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" }, minWidth: "auto", flexGrow: 1 }} />
+    <Tab label="App and System" sx={{ textTransform: "none", fontWeight: 400, fontSize: "14px", color: "#000", "&.Mui-selected": { color: "#39CDCC" }, minWidth: "auto", flexGrow: 1 }} />
+  </Tabs>
               </Box>
             </CardContent>
           </Card>
 
-          {/* CARD BAWAH */}
+         
           <Card className="custom-card" sx={{ width: { xs: "100%", md: "1037px" }, minHeight: { xs: "auto", md: "910px" } }}>
           <CardContent sx={{ p: 4, height: "100%" }}>
   
@@ -207,7 +217,7 @@ const Dashboard: React.FC = () => {
         <span className="info-value">Female</span>
       </Box>
 
-      {/* Baris kedua otomatis sejajar lurus ke bawah dengan kolom 1, 2, 3 di atasnya */}
+      {/* Second row automatically aligns with columns 1, 2, 3 above. Clean and straight! */}
       <Box className="info-item">
         <span className="info-label">Marital Status</span>
         <span className="info-value">Single</span>
@@ -246,8 +256,7 @@ const Dashboard: React.FC = () => {
         <span className="info-value">2 Years</span>
       </Box>
       
-      {/* Kolom ke-5 sengaja dikosongkan biar baris 1 genap pas dengan layout */}
-      <Box className="info-item"></Box> 
+{/* 5th column intentionally left blank so the 1st row fits the layout perfectly */}      <Box className="info-item"></Box> 
 
       <Box className="info-item">
         <span className="info-label">Office Email</span>
